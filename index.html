@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Cup TCG - Farcaster</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>.tab-content { display: none; } .tab-content.active { display: block; }</style>
+</head>
+<body class="bg-gray-900 text-white font-sans pb-24">
+
+  <header class="bg-gray-800 p-4 border-b border-gray-700">
+    <h1 class="text-xl font-black text-center text-green-400">🏆 World Cup TCG</h1>
+    <div class="flex justify-between mt-2 text-xs font-mono">
+      <span>$CONTOH: <span id="token-balance">0.00</span></span>
+      <span>⚡Power: <span id="mining-power">0</span></span>
+    </div>
+  </header>
+
+  <main class="p-4">
+    <section id="tab-pack" class="tab-content active">
+      <h2 class="font-bold mb-4">🎁 Buka Pack (Isi 5 Kartu)</h2>
+      <div id="pack-container" class="grid grid-cols-2 gap-4"></div>
+    </section>
+
+    <section id="tab-lineup" class="tab-content">
+      <h2 class="font-bold mb-4">⚽ Lapangan Mining</h2>
+      <div id="pitch-field" class="bg-green-800/30 border-2 border-green-500 rounded-xl h-48 flex flex-wrap items-center justify-center p-2 gap-2 mb-4">
+        <div id="lineup-slots" class="text-green-500 text-sm italic">Pilih kartu di bawah untuk mining!</div>
+      </div>
+      <h2 class="font-bold mb-2">Inventory Anda</h2>
+      <div id="inventory-list" class="grid grid-cols-3 gap-2"></div>
+    </section>
+
+    <section id="tab-leaderboard" class="tab-content">
+      <h2 class="font-bold mb-4">🏆 Leaderboard Global</h2>
+      <div id="leaderboard-list" class="bg-gray-800 rounded-xl p-4 text-sm">
+        <p>1. Chalvin Cahya - 5000 Mining Power</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="fixed bottom-0 w-full bg-gray-900 border-t border-gray-800 flex justify-around p-3">
+    <button onclick="switchTab('pack')" class="text-green-400 font-bold text-xs">🎁 PACK</button>
+    <button onclick="switchTab('lineup')" class="text-gray-500 font-bold text-xs">⚽ LINE UP</button>
+    <button onclick="switchTab('leaderboard')" class="text-gray-500 font-bold text-xs">🏆 LEADERBOARD</button>
+  </nav>
+
+  <script type="module">
+    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+    
+    let balance = 0;
+    let miningPower = 0;
+    let collection = [];
+    const MY_WALLET = "0x4A0F1AdBECABd3fc0DBD857D1AD5b39a35e98C21";
+
+    const packs = [
+      { name: "Bronze", price: 1, power: 1, color: "bg-amber-800" },
+      { name: "Silver", price: 3, power: 4, color: "bg-gray-500" },
+      { name: "Gold", price: 5, power: 8, color: "bg-yellow-600" }
+    ];
+
+    const packCont = document.getElementById('pack-container');
+    packs.forEach(p => {
+      packCont.innerHTML += `
+        <div class="${p.color} p-4 rounded-xl text-center">
+          <div class="font-bold">${p.name}</div>
+          <button onclick="buyPack(${p.power}, '${p.name}', ${p.price})" class="mt-2 bg-black/50 px-4 py-1 rounded-lg text-xs">Beli $${p.price}</button>
+        </div>`;
+    });
+
+    window.buyPack = async (powerMod, name, price) => {
+      alert("Memulai transaksi pembayaran " + price + " USDC ke dompet Anda...");
+      for(let i = 0; i < 5; i++) {
+        collection.push({ name: "Pemain " + Math.floor(Math.random()*100), power: Math.floor(Math.random()*20 * powerMod) });
+      }
+      alert("Berhasil buka 5 kartu!");
+      renderInventory();
+    };
+
+    function renderInventory() {
+      const inv = document.getElementById('inventory-list');
+      inv.innerHTML = '';
+      collection.forEach((card, index) => {
+        inv.innerHTML += `
+          <div class="bg-gray-700 p-2 rounded text-center text-xs" onclick="addToLineUp(${index})">
+            <div>${card.name}</div>
+            <div class="text-green-400">⚡${card.power}</div>
+          </div>`;
+      });
+    }
+
+    window.addToLineUp = (index) => {
+      const card = collection[index];
+      miningPower += card.power;
+      document.getElementById('lineup-slots').innerHTML += `<div class="bg-yellow-500 text-black p-1 rounded text-[10px]">${card.name}</div>`;
+      document.getElementById('mining-power').innerText = miningPower;
+    };
+
+    window.switchTab = (id) => {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-'+id).classList.add('active');
+    };
+
+    setInterval(() => {
+      balance += (miningPower * 0.0001);
+      document.getElementById('token-balance').innerText = balance.toFixed(2);
+    }, 1000);
+
+    window.addEventListener('DOMContentLoaded', async () => { await sdk.actions.ready(); });
+  </script>
+</body>
+</html>
