@@ -2,94 +2,314 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>World Cup TCG</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
+
+body{
+background:#030712;
+color:white;
+font-family:sans-serif;
+}
+
 .tab-view{display:none}
 .tab-view.active{display:block}
 
 .slider{
+
 display:flex;
+
+justify-content:center;
+
+align-items:center;
+
 overflow-x:auto;
+
 scroll-snap-type:x mandatory;
-gap:16px;
-padding:20px;
+
+gap:22px;
+
+padding:26px;
+
 scrollbar-width:none;
+
 }
 
-.card-pack{
-flex:0 0 75%;
-scroll-snap-align:center;
-border-radius:24px;
-padding:30px;
-text-align:center;
-color:white;
-box-shadow:0 20px 40px rgba(0,0,0,.5);
+.slider::-webkit-scrollbar{
+display:none;
 }
+
+.pack-card{
+
+flex:0 0 82%;
+
+scroll-snap-align:center;
+
+position:relative;
+
+border-radius:38px;
+
+padding:18px;
+
+overflow:hidden;
+
+box-shadow:
+0 25px 55px rgba(0,0,0,.45);
+
+}
+
+.free{
+
+background:
+linear-gradient(
+145deg,
+#16a34a,
+#14532d
+);
+
+}
+
+.bronze{
+
+background:
+linear-gradient(
+145deg,
+#f59e0b,
+#78350f
+);
+
+}
+
+.gold{
+
+background:
+linear-gradient(
+145deg,
+#eab308,
+#854d0e
+);
+
+}
+
+.ultimate{
+
+background:
+linear-gradient(
+145deg,
+#3b82f6,
+#312e81
+);
+
+}
+
+.pack-inner{
+
+height:520px;
+
+border-radius:30px;
+
+padding:28px;
+
+background:
+linear-gradient(
+180deg,
+rgba(255,255,255,.16),
+rgba(255,255,255,.05)
+);
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
+backdrop-filter:blur(10px);
+
+}
+
+.badge{
+
+position:absolute;
+
+top:18px;
+left:18px;
+
+background:black;
+
+padding:8px 16px;
+
+border-radius:999px;
+
+font-size:11px;
+
+font-weight:700;
+
+}
+
+.pack-logo{
+
+font-size:14px;
+font-weight:900;
+opacity:.7;
+
+}
+
+.pack-title{
+
+font-size:56px;
+
+font-weight:900;
+
+line-height:.9;
+
+margin-top:50px;
+
+}
+
+.pack-sub{
+
+font-size:13px;
+
+letter-spacing:2px;
+
+opacity:.85;
+
+}
+
+.pack-price{
+
+font-size:44px;
+
+font-weight:900;
+
+}
+
+.buy-btn{
+
+width:100%;
+
+padding:18px;
+
+border-radius:24px;
+
+font-weight:900;
+
+font-size:18px;
+
+background:white;
+
+color:black;
+
+margin-top:18px;
+
+}
+
 </style>
 </head>
 
-<body class="bg-gray-950 text-white font-sans pb-24">
+<body class="pb-24">
 
 <header class="p-4 border-b border-gray-800 text-center">
-<h1 class="text-xl font-black text-green-400">
-🏆 World Cup TCG
+
+<h1 class="text-2xl font-black text-green-400">
+⚽ WORLD CUP TCG
 </h1>
 
 <p id="walletText"
-class="text-[10px] text-gray-500">
-Loading Farcaster...
+class="text-xs text-gray-400">
+Connecting...
 </p>
+
 </header>
 
 <div id="tab-pack" class="tab-view active">
 
-<h2 class="px-6 font-bold mt-4 text-center">
-🎁 Mystery Packs
-</h2>
-
 <div class="slider">
 
-<div class="card-pack bg-green-700">
+<!-- FREE -->
 
-<h3 class="font-black text-2xl">
-FREE
-</h3>
+<div class="pack-card free">
 
-<div class="text-6xl my-4">
-🎁
+<div class="badge">
+FREE • 1H
 </div>
 
-<p class="mb-6 text-xs">
-1x setiap 1 jam
-</p>
+<div class="pack-inner">
+
+<div>
+
+<div class="pack-logo">
+WORLD CUP COLLECTION
+</div>
+
+<div class="pack-title">
+FREE<br>PACK
+</div>
+
+</div>
+
+<div>
+
+<div class="pack-sub">
+CLAIM EVERY 1 HOUR
+</div>
+
+<div class="pack-price">
+FREE
+</div>
 
 <button
 onclick="buy('free')"
-class="w-full bg-white text-black font-black py-3 rounded-xl">
+class="buy-btn">
 
-FREE PACK
+OPEN PACK
 
 </button>
 
 </div>
 
-<div class="card-pack bg-amber-700">
+</div>
+</div>
 
-<h3 class="font-black text-2xl">
+<!-- BRONZE -->
+
+<div class="pack-card bronze">
+
+<div class="badge">
 BRONZE
-</h3>
+</div>
 
-<div class="text-6xl my-4">
-⚽
+<div class="pack-inner">
+
+<div>
+
+<div class="pack-logo">
+WORLD CUP COLLECTION
+</div>
+
+<div class="pack-title">
+BRONZE<br>PACK
+</div>
+
+</div>
+
+<div>
+
+<div class="pack-sub">
+RARE PLAYERS
+</div>
+
+<div class="pack-price">
+$1
 </div>
 
 <button
 onclick="buy(1)"
-class="w-full bg-white text-black font-black py-3 rounded-xl">
+class="buy-btn">
 
 BUY $1
 
@@ -97,19 +317,44 @@ BUY $1
 
 </div>
 
-<div class="card-pack bg-yellow-500">
+</div>
+</div>
 
-<h3 class="font-black text-2xl">
+<!-- GOLD -->
+
+<div class="pack-card gold">
+
+<div class="badge">
 GOLD
-</h3>
+</div>
 
-<div class="text-6xl my-4">
-🏆
+<div class="pack-inner">
+
+<div>
+
+<div class="pack-logo">
+WORLD CUP COLLECTION
+</div>
+
+<div class="pack-title">
+GOLD<br>PACK
+</div>
+
+</div>
+
+<div>
+
+<div class="pack-sub">
+STAR PLAYERS
+</div>
+
+<div class="pack-price">
+$2
 </div>
 
 <button
 onclick="buy(2)"
-class="w-full bg-black text-white font-black py-3 rounded-xl">
+class="buy-btn">
 
 BUY $2
 
@@ -117,19 +362,44 @@ BUY $2
 
 </div>
 
-<div class="card-pack bg-blue-700">
+</div>
+</div>
 
-<h3 class="font-black text-2xl">
+<!-- ULTIMATE -->
+
+<div class="pack-card ultimate">
+
+<div class="badge">
 ULTIMATE
-</h3>
+</div>
 
-<div class="text-6xl my-4">
-💎
+<div class="pack-inner">
+
+<div>
+
+<div class="pack-logo">
+WORLD CUP COLLECTION
+</div>
+
+<div class="pack-title">
+ULTIMATE<br>PACK
+</div>
+
+</div>
+
+<div>
+
+<div class="pack-sub">
+LEGEND PLAYERS
+</div>
+
+<div class="pack-price">
+$3
 </div>
 
 <button
 onclick="buy(3)"
-class="w-full bg-white text-black font-black py-3 rounded-xl">
+class="buy-btn">
 
 BUY $3
 
@@ -140,15 +410,15 @@ BUY $3
 </div>
 </div>
 
-<div id="tab-lineup" class="tab-view px-6">
+</div>
 
-<h2 class="font-bold mt-4">
-⚽ Lineup
-</h2>
+</div>
 
-<div
-id="pitch"
-class="border-2 border-dashed border-green-500 rounded-xl h-40 mt-4 flex items-center justify-center text-green-500">
+<div id="tab-lineup"
+class="tab-view px-6">
+
+<div id="pitch"
+class="mt-6 border-2 border-dashed border-green-500 rounded-xl h-40 flex items-center justify-center">
 
 Lapangan kosong
 
@@ -156,43 +426,14 @@ Lapangan kosong
 
 </div>
 
-<div id="tab-leaderboard"
-class="tab-view px-6">
-
-<h2 class="font-bold mt-4">
-🏆 Leaderboard
-</h2>
-
-<div
-class="bg-gray-800 p-4 rounded-xl mt-4 text-sm">
-
-1. Anda — 0 Power
-
-</div>
-
-</div>
-
 <nav class="fixed bottom-0 w-full bg-gray-950 border-t border-gray-800 flex justify-around p-4">
 
-<button
-onclick="show('pack')">
-
+<button onclick="show('pack')">
 🎁 PACK
-
 </button>
 
-<button
-onclick="show('lineup')">
-
+<button onclick="show('lineup')">
 ⚽ LINEUP
-
-</button>
-
-<button
-onclick="show('leaderboard')">
-
-🏆 LB
-
 </button>
 
 </nav>
@@ -205,10 +446,10 @@ from 'https://esm.sh/@farcaster/miniapp-sdk';
 import { encodeFunctionData }
 from 'https://esm.sh/viem';
 
-const MERCHANT =
+const MERCHANT=
 "0x4A0F1AdBECABd3fc0DBD857D1AD5b39a35e98C21";
 
-const USDC =
+const USDC=
 "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
 
 let FID="guest";
@@ -226,13 +467,15 @@ document
 
 async function pay(price){
 
-const calldata =
+const data=
 encodeFunctionData({
 
 abi:[{
 
 name:'transfer',
+
 type:'function',
+
 stateMutability:'nonpayable',
 
 inputs:[
@@ -240,9 +483,7 @@ inputs:[
 {name:'amount',type:'uint256'}
 ],
 
-outputs:[
-{type:'bool'}
-]
+outputs:[{type:'bool'}]
 
 }],
 
@@ -263,7 +504,7 @@ to:USDC,
 
 value:'0',
 
-data:calldata
+data
 
 });
 
@@ -275,10 +516,12 @@ try{
 
 if(price==="free"){
 
-const key=`freepack_${FID}`;
+const key=`free_${FID}`;
 
 const last=
-Number(localStorage.getItem(key)||0);
+Number(
+localStorage.getItem(key)||0
+);
 
 const now=Date.now();
 
@@ -289,17 +532,22 @@ const mins=Math.ceil(
 );
 
 alert(
-`Free pack ready ${mins} menit lagi`
+`Ready lagi ${mins} menit`
 );
 
 return;
 
 }
 
-localStorage.setItem(key,now);
+localStorage.setItem(
+key,
+now
+);
 
-document.getElementById('pitch')
-.innerHTML="🎁 FREE PACK OPENED!";
+document
+.getElementById('pitch')
+.innerHTML=
+"🎁 FREE PACK OPENED!";
 
 return;
 
@@ -307,37 +555,35 @@ return;
 
 await pay(price);
 
-document.getElementById('pitch')
-.innerHTML=`🏆 PACK $${price} BERHASIL!`;
+document
+.getElementById('pitch')
+.innerHTML=
+`🏆 PACK $${price} BERHASIL`;
 
 }
-catch(err){
+catch(e){
 
-console.error(err);
+console.error(e);
 
-alert("Transaksi dibatalkan.");
+alert("Transaksi dibatalkan");
 
 }
 
 };
 
-window.addEventListener(
-'DOMContentLoaded',
-async()=>{
-
 await sdk.actions.ready();
 
-const ctx =
+const ctx=
 await sdk.context;
 
-FID =
-ctx?.user?.fid || "guest";
+FID=
+ctx?.user?.fid
+|| "guest";
 
 document
 .getElementById('walletText')
-.innerText=`FID: ${FID}`;
-
-});
+.innerText=
+`FID: ${FID}`;
 
 </script>
 
