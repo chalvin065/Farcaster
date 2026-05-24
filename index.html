@@ -6,46 +6,84 @@
   <title>World Cup TCG</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .tab-content { display: none; } 
-    .tab-content.active { display: block; }
-    .pack-slider { display: flex; overflow-x: auto; gap: 16px; padding: 20px 10px; }
-    .pack-card { flex: 0 0 75%; border-radius: 20px; padding: 30px; text-align: center; }
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+    .slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; padding: 20px; }
+    .card-pack { flex: 0 0 70%; scroll-snap-align: center; border-radius: 20px; padding: 30px; text-align: center; color: white; }
   </style>
 </head>
 <body class="bg-gray-950 text-white font-sans pb-24">
 
-  <header class="p-4 border-b border-gray-800">
-    <h1 class="text-xl font-black text-center text-green-400">🏆 World Cup TCG</h1>
+  <header class="p-4 border-b border-gray-800 text-center">
+    <h1 class="text-xl font-black text-green-400">🏆 World Cup TCG</h1>
+    <p class="text-[10px] font-mono text-gray-500">Wallet: 0x4A...98C21</p>
   </header>
 
-  <main>
-    <section id="tab-pack" class="tab-content active">
-      <h2 class="font-bold px-6 mt-4">🎁 Buka Mystery Pack</h2>
-      <div id="pack-container" class="pack-slider">
-        <div class="pack-card bg-amber-900 flex flex-col items-center">
-          <h3 class="font-black text-xl">Bronze</h3>
-          <button onclick="alert('Membeli Bronze Pack')" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $1</button>
-        </div>
-        <div class="pack-card bg-gray-600 flex flex-col items-center">
-          <h3 class="font-black text-xl">Silver</h3>
-          <button onclick="alert('Membeli Silver Pack')" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $3</button>
-        </div>
+  <div id="tab-pack" class="tab-view active">
+    <h2 class="px-6 font-bold mt-4">🎁 Buka Mystery Pack</h2>
+    <div class="slider">
+      <div class="card-pack bg-amber-900">
+        <h3 class="font-bold text-lg">Bronze Pack</h3>
+        <button onclick="buy(1)" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $1</button>
       </div>
-    </section>
-  </main>
+      <div class="card-pack bg-gray-600">
+        <h3 class="font-bold text-lg">Silver Pack</h3>
+        <button onclick="buy(3)" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $3</button>
+      </div>
+      <div class="card-pack bg-yellow-600">
+        <h3 class="font-bold text-lg">Gold Pack</h3>
+        <button onclick="buy(5)" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $5</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-lineup" class="tab-view px-6">
+    <h2 class="font-bold mt-4">⚽ Lapangan Mining</h2>
+    <div id="pitch" class="border-2 border-dashed border-green-500 rounded-xl h-40 mt-4 flex items-center justify-center text-green-500 text-sm italic">
+      Lapangan Kosong
+    </div>
+  </div>
+
+  <div id="tab-leaderboard" class="tab-view px-6">
+    <h2 class="font-bold mt-4">🏆 Leaderboard</h2>
+    <div class="bg-gray-800 p-4 rounded-xl mt-4 text-sm">
+      <p>1. Anda (0x4A...98C21) - 0 Power</p>
+    </div>
+  </div>
 
   <nav class="fixed bottom-0 w-full bg-gray-950 border-t border-gray-800 flex justify-around p-4">
-    <button onclick="switchTab('pack')" class="text-green-400 font-bold text-xs">🎁 PACK</button>
-    <button onclick="switchTab('lineup')" class="text-gray-500 font-bold text-xs">⚽ LINE UP</button>
-    <button onclick="switchTab('leaderboard')" class="text-gray-500 font-bold text-xs">🏆 LEADERBOARD</button>
+    <button onclick="show('pack')" class="text-green-400 font-bold">🎁 PACK</button>
+    <button onclick="show('lineup')" class="text-white font-bold">⚽ LINE UP</button>
+    <button onclick="show('leaderboard')" class="text-white font-bold">🏆 LB</button>
   </nav>
 
-  <script>
-    function switchTab(id) {
-      document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-      // Karena kita sederhanakan, kita beri pesan sementara untuk tab lain
-      alert("Fitur " + id + " sedang dibangun!");
-    }
+  <script type="module">
+    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+    
+    // Alamat Anda
+    const MY_WALLET = "0x4A0F1AdBECABd3fc0DBD857D1AD5b39a35e98C21";
+
+    window.show = (id) => {
+      document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+    };
+
+    window.buy = async (price) => {
+      alert("Membuka transaksi " + price + " USDC ke: " + MY_WALLET);
+      try {
+        await sdk.actions.sendTransaction({
+          to: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // Kontrak USDC
+          value: 0,
+          chainId: 8453,
+          data: "0xa9059cbb" + MY_WALLET.toLowerCase().replace("0x", "").padStart(64, "0") + (price * 1000000).toString(16).padStart(64, "0")
+        });
+        document.getElementById('pitch').innerHTML = "⚽ 5 Kartu Baru Didapat!";
+      } catch (e) {
+        alert("Transaksi dibatalkan.");
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', async () => { await sdk.actions.ready(); });
   </script>
 </body>
 </html>
