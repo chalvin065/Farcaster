@@ -8,8 +8,8 @@
   <style>
     .tab-view { display: none; }
     .tab-view.active { display: block; }
-    .slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; padding: 20px; }
-    .card-pack { flex: 0 0 70%; scroll-snap-align: center; border-radius: 20px; padding: 30px; text-align: center; color: white; }
+    .slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; padding: 20px; scrollbar-width: none; }
+    .card-pack { flex: 0 0 75%; scroll-snap-align: center; border-radius: 24px; padding: 30px; text-align: center; color: white; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body class="bg-gray-950 text-white font-sans pb-24">
@@ -20,19 +20,25 @@
   </header>
 
   <div id="tab-pack" class="tab-view active">
-    <h2 class="px-6 font-bold mt-4">🎁 Buka Mystery Pack</h2>
+    <h2 class="px-6 font-bold mt-4 text-center">🎁 Pilih Mystery Pack</h2>
     <div class="slider">
-      <div class="card-pack bg-amber-900">
-        <h3 class="font-bold text-lg">Bronze Pack</h3>
-        <button onclick="buy(1)" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $1</button>
+      <div class="card-pack" style="background: linear-gradient(135deg, #78350f 0%, #451a03 100%);">
+        <h3 class="font-black text-2xl uppercase italic">Bronze</h3>
+        <div class="text-6xl my-4">⚽</div>
+        <p class="text-[10px] opacity-80 mb-6">Paket Starter Pemain</p>
+        <button onclick="buy(1)" class="w-full bg-white text-black font-black py-3 rounded-xl shadow-lg">Buy ($1)</button>
       </div>
-      <div class="card-pack bg-gray-600">
-        <h3 class="font-bold text-lg">Silver Pack</h3>
-        <button onclick="buy(3)" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $3</button>
+      <div class="card-pack" style="background: linear-gradient(135deg, #d97706 0%, #78350f 100%); border: 2px solid #fbbf24;">
+        <h3 class="font-black text-2xl uppercase italic">Gold</h3>
+        <div class="text-6xl my-4">🏆</div>
+        <p class="text-[10px] opacity-80 mb-6">Paket Pemain Bintang</p>
+        <button onclick="buy(5)" class="w-full bg-yellow-400 text-black font-black py-3 rounded-xl shadow-lg">Buy ($5)</button>
       </div>
-      <div class="card-pack bg-yellow-600">
-        <h3 class="font-bold text-lg">Gold Pack</h3>
-        <button onclick="buy(5)" class="mt-4 bg-white text-black px-6 py-2 rounded-lg font-bold">Beli $5</button>
+      <div class="card-pack" style="background: radial-gradient(circle, #4f46e5 0%, #1e1b4b 100%); border: 3px solid #60a5fa;">
+        <h3 class="font-black text-2xl uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-white">Ultimate</h3>
+        <div class="text-6xl my-4">💎</div>
+        <p class="text-[10px] opacity-80 mb-6">Pemain Legenda Dunia</p>
+        <button onclick="buy(100)" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-black py-3 rounded-xl shadow-lg">Buy ($100)</button>
       </div>
     </div>
   </div>
@@ -52,15 +58,13 @@
   </div>
 
   <nav class="fixed bottom-0 w-full bg-gray-950 border-t border-gray-800 flex justify-around p-4">
-    <button onclick="show('pack')" class="text-green-400 font-bold">🎁 PACK</button>
-    <button onclick="show('lineup')" class="text-white font-bold">⚽ LINE UP</button>
-    <button onclick="show('leaderboard')" class="text-white font-bold">🏆 LB</button>
+    <button onclick="show('pack')" class="text-green-400 font-bold text-xs">🎁 PACK</button>
+    <button onclick="show('lineup')" class="text-white font-bold text-xs">⚽ LINE UP</button>
+    <button onclick="show('leaderboard')" class="text-white font-bold text-xs">🏆 LB</button>
   </nav>
 
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
-    
-    // Alamat Anda
     const MY_WALLET = "0x4A0F1AdBECABd3fc0DBD857D1AD5b39a35e98C21";
 
     window.show = (id) => {
@@ -69,10 +73,10 @@
     };
 
     window.buy = async (price) => {
-      alert("Membuka transaksi " + price + " USDC ke: " + MY_WALLET);
+      alert("Memproses pembayaran " + price + " USDC...");
       try {
         await sdk.actions.sendTransaction({
-          to: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // Kontrak USDC
+          to: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           value: 0,
           chainId: 8453,
           data: "0xa9059cbb" + MY_WALLET.toLowerCase().replace("0x", "").padStart(64, "0") + (price * 1000000).toString(16).padStart(64, "0")
