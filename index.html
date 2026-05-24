@@ -19,7 +19,7 @@ font-family:sans-serif;
 .tab-view{display:none}
 .tab-view.active{display:block}
 
-.slider{
+.pack-area{
 
 display:flex;
 
@@ -27,164 +27,43 @@ justify-content:center;
 
 align-items:center;
 
-overflow-x:auto;
+gap:12px;
 
-scroll-snap-type:x mandatory;
-
-gap:22px;
-
-padding:26px;
-
-scrollbar-width:none;
+margin-top:30px;
 
 }
 
-.slider::-webkit-scrollbar{
-display:none;
+.arrow{
+
+width:65px;
+height:65px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.10);
+
+font-size:34px;
+
+font-weight:900;
+
 }
 
 .pack-card{
 
-flex:0 0 82%;
+width:320px;
 
-scroll-snap-align:center;
+text-align:center;
 
-position:relative;
+}
 
-border-radius:38px;
+.pack-img{
 
-padding:18px;
+width:100%;
 
-overflow:hidden;
+border-radius:28px;
 
 box-shadow:
 0 25px 55px rgba(0,0,0,.45);
-
-}
-
-.free{
-
-background:
-linear-gradient(
-145deg,
-#16a34a,
-#14532d
-);
-
-}
-
-.bronze{
-
-background:
-linear-gradient(
-145deg,
-#f59e0b,
-#78350f
-);
-
-}
-
-.gold{
-
-background:
-linear-gradient(
-145deg,
-#eab308,
-#854d0e
-);
-
-}
-
-.ultimate{
-
-background:
-linear-gradient(
-145deg,
-#3b82f6,
-#312e81
-);
-
-}
-
-.pack-inner{
-
-height:520px;
-
-border-radius:30px;
-
-padding:28px;
-
-background:
-linear-gradient(
-180deg,
-rgba(255,255,255,.16),
-rgba(255,255,255,.05)
-);
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:space-between;
-
-backdrop-filter:blur(10px);
-
-}
-
-.badge{
-
-position:absolute;
-
-top:18px;
-left:18px;
-
-background:black;
-
-padding:8px 16px;
-
-border-radius:999px;
-
-font-size:11px;
-
-font-weight:700;
-
-}
-
-.pack-logo{
-
-font-size:14px;
-font-weight:900;
-opacity:.7;
-
-}
-
-.pack-title{
-
-font-size:56px;
-
-font-weight:900;
-
-line-height:.9;
-
-margin-top:50px;
-
-}
-
-.pack-sub{
-
-font-size:13px;
-
-letter-spacing:2px;
-
-opacity:.85;
-
-}
-
-.pack-price{
-
-font-size:44px;
-
-font-weight:900;
 
 }
 
@@ -194,15 +73,15 @@ width:100%;
 
 padding:18px;
 
-border-radius:24px;
-
-font-weight:900;
-
-font-size:18px;
+border-radius:22px;
 
 background:white;
 
 color:black;
+
+font-size:22px;
+
+font-weight:900;
 
 margin-top:18px;
 
@@ -213,7 +92,7 @@ margin-top:18px;
 
 <body class="pb-24">
 
-<header class="p-4 border-b border-gray-800 text-center">
+<header class="p-4 text-center border-b border-gray-800">
 
 <h1 class="text-2xl font-black text-green-400">
 ⚽ WORLD CUP TCG
@@ -221,194 +100,35 @@ margin-top:18px;
 
 <p id="walletText"
 class="text-xs text-gray-400">
+
 Connecting...
+
 </p>
 
 </header>
 
-<div id="tab-pack" class="tab-view active">
+<div id="tab-pack"
+class="tab-view active">
 
-<div class="slider">
-
-<!-- FREE -->
-
-<div class="pack-card free">
-
-<div class="badge">
-FREE • 1H
-</div>
-
-<div class="pack-inner">
-
-<div>
-
-<div class="pack-logo">
-WORLD CUP COLLECTION
-</div>
-
-<div class="pack-title">
-FREE<br>PACK
-</div>
-
-</div>
-
-<div>
-
-<div class="pack-sub">
-CLAIM EVERY 1 HOUR
-</div>
-
-<div class="pack-price">
-FREE
-</div>
+<div class="pack-area">
 
 <button
-onclick="buy('free')"
-class="buy-btn">
+onclick="prevPack()"
+class="arrow">
 
-OPEN PACK
+◀
 
 </button>
 
-</div>
-
-</div>
-</div>
-
-<!-- BRONZE -->
-
-<div class="pack-card bronze">
-
-<div class="badge">
-BRONZE
-</div>
-
-<div class="pack-inner">
-
-<div>
-
-<div class="pack-logo">
-WORLD CUP COLLECTION
-</div>
-
-<div class="pack-title">
-BRONZE<br>PACK
-</div>
-
-</div>
-
-<div>
-
-<div class="pack-sub">
-RARE PLAYERS
-</div>
-
-<div class="pack-price">
-$1
-</div>
+<div id="packContainer"></div>
 
 <button
-onclick="buy(1)"
-class="buy-btn">
+onclick="nextPack()"
+class="arrow">
 
-BUY $1
-
-</button>
-
-</div>
-
-</div>
-</div>
-
-<!-- GOLD -->
-
-<div class="pack-card gold">
-
-<div class="badge">
-GOLD
-</div>
-
-<div class="pack-inner">
-
-<div>
-
-<div class="pack-logo">
-WORLD CUP COLLECTION
-</div>
-
-<div class="pack-title">
-GOLD<br>PACK
-</div>
-
-</div>
-
-<div>
-
-<div class="pack-sub">
-STAR PLAYERS
-</div>
-
-<div class="pack-price">
-$2
-</div>
-
-<button
-onclick="buy(2)"
-class="buy-btn">
-
-BUY $2
+▶
 
 </button>
-
-</div>
-
-</div>
-</div>
-
-<!-- ULTIMATE -->
-
-<div class="pack-card ultimate">
-
-<div class="badge">
-ULTIMATE
-</div>
-
-<div class="pack-inner">
-
-<div>
-
-<div class="pack-logo">
-WORLD CUP COLLECTION
-</div>
-
-<div class="pack-title">
-ULTIMATE<br>PACK
-</div>
-
-</div>
-
-<div>
-
-<div class="pack-sub">
-LEGEND PLAYERS
-</div>
-
-<div class="pack-price">
-$3
-</div>
-
-<button
-onclick="buy(3)"
-class="buy-btn">
-
-BUY $3
-
-</button>
-
-</div>
-
-</div>
-</div>
 
 </div>
 
@@ -417,7 +137,9 @@ BUY $3
 <div id="tab-lineup"
 class="tab-view px-6">
 
-<div id="pitch"
+<div
+id="pitch"
+
 class="mt-6 border-2 border-dashed border-green-500 rounded-xl h-40 flex items-center justify-center">
 
 Lapangan kosong
@@ -454,14 +176,98 @@ const USDC=
 
 let FID="guest";
 
+const packs=[
+
+{
+img:"/pack-free.png",
+price:"FREE",
+buy:"buy('free')"
+},
+
+{
+img:"/pack-1.png",
+price:"$1",
+buy:"buy(1)"
+},
+
+{
+img:"/pack-2.png",
+price:"$2",
+buy:"buy(2)"
+},
+
+{
+img:"/pack-3.png",
+price:"$3",
+buy:"buy(3)"
+}
+
+];
+
+let current=0;
+
 window.show=(id)=>{
 
 document.querySelectorAll('.tab-view')
-.forEach(x=>x.classList.remove('active'));
+.forEach(
+x=>x.classList.remove('active')
+);
 
 document
 .getElementById('tab-'+id)
 .classList.add('active');
+
+};
+
+function renderPack(){
+
+const p=packs[current];
+
+document
+.getElementById(
+'packContainer'
+)
+.innerHTML=
+
+`
+<div class="pack-card">
+
+<img
+src="${p.img}"
+class="pack-img">
+
+<button
+onclick="${p.buy}"
+class="buy-btn">
+
+BUY (${p.price})
+
+</button>
+
+</div>
+`;
+
+}
+
+window.nextPack=()=>{
+
+current++;
+
+if(current>=packs.length)
+current=0;
+
+renderPack();
+
+};
+
+window.prevPack=()=>{
+
+current--;
+
+if(current<0)
+current=packs.length-1;
+
+renderPack();
 
 };
 
@@ -483,7 +289,9 @@ inputs:[
 {name:'amount',type:'uint256'}
 ],
 
-outputs:[{type:'bool'}]
+outputs:[
+{type:'bool'}
+]
 
 }],
 
@@ -527,19 +335,16 @@ const now=Date.now();
 
 if(now-last<3600000){
 
-const mins=Math.ceil(
-(3600000-(now-last))/60000
-);
-
 alert(
-`Ready lagi ${mins} menit`
+"Free pack belum ready."
 );
 
 return;
 
 }
 
-localStorage.setItem(
+localStorage
+.setItem(
 key,
 now
 );
@@ -547,6 +352,7 @@ now
 document
 .getElementById('pitch')
 .innerHTML=
+
 "🎁 FREE PACK OPENED!";
 
 return;
@@ -558,14 +364,17 @@ await pay(price);
 document
 .getElementById('pitch')
 .innerHTML=
-`🏆 PACK $${price} BERHASIL`;
+
+`🏆 PACK ${price} BERHASIL`;
 
 }
 catch(e){
 
 console.error(e);
 
-alert("Transaksi dibatalkan");
+alert(
+"Transaksi dibatalkan"
+);
 
 }
 
@@ -581,9 +390,14 @@ ctx?.user?.fid
 || "guest";
 
 document
-.getElementById('walletText')
+.getElementById(
+'walletText'
+)
 .innerText=
+
 `FID: ${FID}`;
+
+renderPack();
 
 </script>
 
